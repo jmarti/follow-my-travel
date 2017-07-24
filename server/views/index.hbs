@@ -3,6 +3,16 @@
 	<head>
 	</head>
 	<body>
-		<h1>{{title}}</h1>
+		<h1>Post list</h1>
+		<section>
+			{{#each posts as |post|}}
+				
+				<article>
+					<h2><a href="http://localhost:3000/post/{{post.id}}">{{post.title}}</a></h2>
+					<p>{{post.content}}</p>
+					<p><small>By: {{person.firstName}} {{person.lastName}}</small></p>
+				</article>
+			{{/each}}
+		</section>
 	</body>
 </html>

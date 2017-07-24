@@ -43,20 +43,22 @@ app.set('view engine', 'hbs');
 /* BLOG
 **********/
 import index from './routes/index';
+import post from './routes/post';
 import about from './routes/about';
 import api from './routes/api';
 // import graphql from './routes/graphql';
 
 app.use('/graphql', GraphHTTP({
 	schema: Schema,
-	pretty: true,
-	graphiql: true
+	pretty: isDev,
+	graphiql: isDev
 }));
 
 app.set('views', path.join(__dirname, 'views'));
 app.use('/', index);
 app.use('/about', about);
 app.use('/api', api);
+app.use('/post', post);
 
 
 /*
