@@ -3,12 +3,15 @@ import compression from 'compression';
 import path from 'path';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
+import GraphHTTP from 'express-graphql';
 
 // Webpack Requirements
 import webpack from 'webpack';
 import config from '../webpack.config.dev';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+
+import Schema from './schemas';
 
 // Initialize the Express App
 const app = new Express();
@@ -23,6 +26,7 @@ app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 
 const isDev = process.env.NODE_ENV === 'development';
+const isTest = process.env.NODE_ENV === 'test';
 
 if (isDev) {
 	const compiler = webpack(config);
@@ -38,24 +42,22 @@ app.set('view engine', 'hbs');
 
 /* BLOG
 **********/
-import pgPromise from 'pg-promise';
 import index from './routes/index';
 import about from './routes/about';
+import api from './routes/api';
+// import graphql from './routes/graphql';
 
-const pgp = pgPromise();
-const db = pgp('postgres://jordimarti:@localhost:5432/followMyTravelBlog');
-
-db.one('SELECT $1 AS value', 123)
-	.then(data => {
-		console.log('DATA:', data.value);
-	})
-	.catch(error => {
-		console.log('ERROR:', error)
-	});
+app.use('/graphql', GraphHTTP({
+	schema: Schema,
+	pretty: true,
+	graphiql: true
+}));
 
 app.set('views', path.join(__dirname, 'views'));
 app.use('/', index);
 app.use('/about', about);
+app.use('/api', api);
+
 
 /*
 ** APP
@@ -70,6 +72,26 @@ app.use('/app', (req, res, next) => {
 		.status(200)
 		.end(initialHtml());
 });
+
+
+/*
+** ERROR HANDLING
+******************/
+
+import boom from 'express-boom';
+app.use(boom());
+
+app.use((req, res) => {
+	res.boom.notFound();
+});
+
+app.use(function(req, res) {
+	res.boom.badRequest('Validation didn\'t suceed', reasons);
+})
+
+/*
+** STARTIN SERVER
+******************/
 
 app.listen(serverConfig.port, error => {
 	if(!error) {

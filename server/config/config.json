@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "jordimarti",
+    "password": null,
+    "database": "followMyTravelBlog",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}
