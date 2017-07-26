@@ -38,6 +38,7 @@ if (isDev) {
 }
 
 app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, '/public/views'));
 
 
 /* BLOG
@@ -45,7 +46,7 @@ app.set('view engine', 'hbs');
 import index from './routes/index';
 import post from './routes/post';
 import about from './routes/about';
-import api from './routes/api';
+import admin from './routes/admin';
 // import graphql from './routes/graphql';
 
 app.use('/graphql', GraphHTTP({
@@ -54,26 +55,14 @@ app.use('/graphql', GraphHTTP({
 	graphiql: isDev
 }));
 
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '../public/views'));
 app.use('/', index);
 app.use('/about', about);
-app.use('/api', api);
 app.use('/post', post);
+app.use('/admin', admin);
 
 
-/*
-** APP
-*******/
-
-// Import required modules
-import initialHtml from './initialHtml';
 import serverConfig from './config';
-
-app.use('/app', (req, res, next) => {
-	return res.set('Content-type', 'text/html')
-		.status(200)
-		.end(initialHtml());
-});
 
 
 /*

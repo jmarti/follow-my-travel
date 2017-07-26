@@ -1,2 +1,2 @@
-var hello = document.getElementById('hello');
-hello.innerHTML = 'Hello World!';
+var hello = document.getElementById('root');
+hello.innerHTML = 'Hello World';
