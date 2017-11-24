@@ -6,8 +6,7 @@ const config = {
 	adminAssets: {
 		styleSheets: [],
 		scripts: [
-			isDev ? '/vendor.js' : assetsManifest['/vendor.js'],
-			isDev ? '/app.js' : assetsManifest['/app.js']
+			isDev ? '/admin/bundle.js' : assetsManifest['/admin/bundle.js']
 		]
 	}
 };

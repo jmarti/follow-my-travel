@@ -9,4 +9,4 @@ router.get('/', function(req, res) {
 	res.render('admin', {assets: config.adminAssets});
 });
 
-export default router;
+module.exports = router;

@@ -28,4 +28,4 @@ router.get('/:postId', function(req, res) {
 		});
 });
 
-export default router;
+module.exports = router;
